@@ -73,7 +73,7 @@ function App() {
   return (
     <div className="container" style={{ padding: "20px" }}>
       <div className="card">
-        <h1 className="text-center">🔍 Dashboard CVE</h1>
+        <h1 className="text-center">Dashboard CVE</h1>
         <input className="form-control" type="file" onChange={handleUpload} />
       </div>
 
