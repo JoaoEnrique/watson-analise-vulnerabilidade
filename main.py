@@ -1,5 +1,4 @@
 import os
-# from flask import Flask, request, jsonify
 from parser_utils import parse_file
 from ibm_watsonx_ai import Credentials
 from ibm_watsonx_ai.foundation_models import ModelInference
@@ -12,7 +11,6 @@ import json
 
 load_dotenv()
 
-# app = Flask(__name__, static_folder="../frontend", template_folder="../frontend")
 app = FastAPI()
 
 app.add_middleware(
@@ -77,29 +75,6 @@ Output:"""
 def index():
     return app.send_static_file("index.html")
 
-# ---- Rota API para processar entrada ----
-# @app.route("/process", methods=["POST"])
-# def process_input():
-#     text_input = request.form.get("text_input", "")
-#     file = request.files.get("file_input")
-
-#     if file:
-#         file_path = os.path.join("uploads", file.filename)
-#         os.makedirs("uploads", exist_ok=True)
-#         file.save(file_path)
-#         text_input = parse_file(file_path)
-
-#     # Combina exemplos fixos + input do usuário
-#     prompt_input = f"{EXAMPLES}\nEntrada: {text_input}\nSaída:"
-
-#     # Chamada ao modelo IBM Watsonx
-#     generated_response = model.generate_text(prompt=prompt_input, guardrails=False)
-
-#     # ---- FILTRO: corta tudo após a palavra 'Entrada' ----
-#     filtered_response = generated_response.split("Entrada")[0].strip()
-
-#     return jsonify({"result": filtered_response})
-
 @app.post("/process")
 async def process_file(file_input: UploadFile = File(...)):
     """Recebe arquivo CVE JSON e retorna estatísticas"""
@@ -160,4 +135,5 @@ async def process_file(file_input: UploadFile = File(...)):
     return JSONResponse(response)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8002)
