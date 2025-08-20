@@ -13,7 +13,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/process")
+@app.get("")
+def home():
+    return JSONResponse("Ola Mundo")
+
+@app.post("/api/process")
 async def process_file(file_input: UploadFile = File(...)):
     try:
         file_path = await save_upload(file_input)
