@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Visualização de Tendências de Vulnerabilidades CVE",
+  "name": "Visualização de Tendências de Vulnerabilidades CVE",
   "icons": [
     {
       "src": "favicon.ico",

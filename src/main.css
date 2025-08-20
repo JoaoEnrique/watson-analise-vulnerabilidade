@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+.color-red{
+  color: red;
+}
+
+.card{
+  border: 0!important;
+  background-color: #f4f2ee!important;
+  padding: 20px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
