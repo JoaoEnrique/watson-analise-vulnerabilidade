@@ -5,7 +5,7 @@ on:
     branches: [backend]
   
   pull_request:
-    branches: [backend]  
+    branches: [backend]
   
   workflow_dispatch:
 
