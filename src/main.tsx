@@ -11,7 +11,7 @@ import { API_URL } from "./utils/vars";
 import "./main.css";
 
 function App() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<WatsonResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -32,6 +32,8 @@ function App() {
       });
 
       setData(response.data);
+      console.log(response.data);
+      
     } catch (error: any) {
       console.error(error);
       if(error?.response?.data?.error){
@@ -55,8 +57,8 @@ function App() {
   };
 
   // Transformando dados de pie chart, só se data existir
-  const pieData = data?.severidades
-    ? Object.entries(data.severidades).reduce((acc: any, [score, count]) => {
+  const pieData = data?.severities
+    ? Object.entries(data.severities).reduce((acc: any, [score, count]) => {
         const category = categorizeSeverity(score);
         const existing = acc.find((d: any) => d.name === category);
         if (existing) existing.value += count;
@@ -66,8 +68,8 @@ function App() {
     : [];
 
      // Dados para RadialBarChart (proporção por tipo)
-  const radialData = data?.tipos
-    ? Object.entries(data.tipos).map(([tipo, count]) => ({ name: tipo, value: count }))
+  const radialData = data?.types
+    ? Object.entries(data.types).map(([tipo, count]) => ({ name: tipo, value: count }))
     : [];
 
   return (
@@ -75,6 +77,11 @@ function App() {
       <div className="card">
         <h1 className="text-center">Dashboard CVE</h1>
         <input className="form-control" type="file" onChange={handleUpload} />
+        { data?.watsonx_summary &&  (
+          <p className="mt-2" style={{ whiteSpace: "pre-wrap" }}>
+            Waton: {data.watsonx_summary}
+          </p>
+        )}
       </div>
 
       {loading && (
@@ -92,7 +99,7 @@ function App() {
           <h2>CVEs por Ano</h2>
           <div className="row">
             <div className="col-12 col-mg-6 col-lg-6 col-xl-6">
-              <BarChart width={600} height={300} data={Object.entries(data.anos).map(([ano, count]) => ({ ano, count }))}>
+              <BarChart width={600} height={300} data={Object.entries(data.years).map(([ano, count]) => ({ ano, count }))}>
                 <XAxis dataKey="ano" />
                 <YAxis />
                 <Tooltip />
@@ -102,7 +109,7 @@ function App() {
 
             <div className="col-12 col-mg-6 col-lg-6 col-xl-6">
               <h2>Top Tipos de Vulnerabilidade</h2>
-              <BarChart width={600} height={300} data={Object.entries(data.tipos).map(([tipo, count]) => ({ tipo, count }))}>
+              <BarChart width={600} height={300} data={Object.entries(data.years).map(([tipo, count]) => ({ tipo, count }))}>
                 <XAxis dataKey="tipo" angle={-30} textAnchor="end" interval={0} height={100} />
                 <YAxis />
                 <Tooltip />
@@ -124,7 +131,7 @@ function App() {
             </div>
             <div className="col-12 col-mg-6 col-lg-6 col-xl-6">
                <h2>Proporção por Tipo (Radial)</h2>
-                <BarChart layout="vertical" width={600} height={400} data={Object.entries(data.tipos).map(([tipo, count]) => ({ tipo, count }))}>
+                <BarChart layout="vertical" width={600} height={400} data={Object.entries(data.types).map(([tipo, count]) => ({ tipo, count }))}>
                   <XAxis type="number" />
                   <YAxis dataKey="tipo" type="category" width={120} />
                   <Tooltip />
