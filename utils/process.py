@@ -51,7 +51,29 @@ def calculate_statistics(cves):
 
     return dict(years), dict(types.most_common(10)), dict(severities)
 
+# def generate_watson_summary(cves, examples=EXAMPLES):
+#     prompt_input = f"{examples}\nEntrada: {json.dumps(cves[:5])}\nSaída:"
+#     response = model.generate_text(prompt=prompt_input, guardrails=False)
+#     return response.split("Entrada")[0].strip()
+
+
 def generate_watson_summary(cves, examples=EXAMPLES):
-    prompt_input = f"{examples}\nEntrada: {json.dumps(cves[:5])}\nSaída:"
+    years, types, severities = calculate_statistics(cves) # extrai estatísticas
+
+    summary_input = (
+        f"Resumo dos dados carregados:\n"
+        f"- Total de CVEs: {len(cves)}\n"
+        f"- CVEs por ano: {years}\n"
+        f"- Principais tipos de vulnerabilidades: {types}\n"
+        f"- Distribuição de pontuação CVSS: {severities}\n"
+    )
+
+    prompt_input = (
+        f"{examples}\n"
+        f"{summary_input}\n"
+        f"Com base nos dados acima, gere um resumo analítico das vulnerabilidades.\n"
+        f"Output:"
+    )
+
     response = model.generate_text(prompt=prompt_input, guardrails=False)
-    return response.split("Entrada")[0].strip()
+    return response.strip()
