@@ -1,3 +1,49 @@
+# CVE Validator & Report Generator com Watson IA
+
+Este sistema utiliza Watson IA para validar arquivos JSON de vulnerabilidades (CVE) e gerar relatórios inteligentes, facilitando a análise de riscos e mitigação de ameaças de segurança cibernética.
+
+<img width="960" height="441" alt="image" src="https://github.com/user-attachments/assets/1a9f05fe-0d66-473e-9be1-bc15afafb1f8" />
+<img width="960" height="438" alt="image" src="https://github.com/user-attachments/assets/b96b40ae-ecb2-4e82-8db3-111c0a50a375" />
+
+## Funcionalidades
+
+✅ Validação Inteligente de CVEs
+Processa e valida arquivos JSON contendo informações sobre vulnerabilidades conhecidas (Common Vulnerabilities and Exposures).
+
+🧠 Análise com Watson IA
+Integração com IBM Watson para analisar contexto, gravidade, impacto e possíveis soluções com base nos dados fornecidos.
+
+📊 Geração de Relatórios Automatizados
+Cria relatórios detalhados e compreensíveis, prontos para uso em auditorias, equipes de segurança e stakeholders.
+
+📁 Entrada Esperada
+
+O sistema espera um arquivo JSON no formato CVE, contendo dados como:
+
+```json
+{
+  "cve_id": "CVE-2023-1234",
+  "description": "Descrição da vulnerabilidade...",
+  "impact": {
+    "severity": "high"
+  },
+  "references": [...]
+}
+```
+🔧 Tecnologias Utilizadas
+
+IBM Watson X
+
+Python
+
+Reac JS
+
+## 📦 Como Usar
+Baixe o arquivo de CVE e envie para o Watson no frontend
+```
+https://github.com/JoaoEnrique/watson-analise-vulnerabilidade/blob/frontend/nvdcve-2.0-modified.json
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
