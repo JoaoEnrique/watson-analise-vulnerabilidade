@@ -1,4 +1,4 @@
-# CVE Validator & Report Generator com Watson IA
+# CVE Validator com Watson IA
 
 Este sistema utiliza Watson IA para validar arquivos JSON de vulnerabilidades (CVE) e gerar relatórios inteligentes, facilitando a análise de riscos e mitigação de ameaças de segurança cibernética.
 
