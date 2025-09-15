@@ -1,79 +1,103 @@
-from fastapi import FastAPI, UploadFile, File
-import os
-from utils.parser_utils import parse_file
-from collections import Counter, defaultdict
-import json
-from utils.vars import EXAMPLES
-from utils.watson import model
+def extract_packages(packages_dict):
+    """
+    Retorna uma lista de (nome, versão) de todos os pacotes do package-lock v3
+    """
+    all_packages = []
 
-async def save_upload(file_input: UploadFile, folder="uploads") -> str:
-    os.makedirs(folder, exist_ok=True)
-    file_path = os.path.join(folder, file_input.filename)
-    with open(file_path, "wb") as f:
-        f.write(await file_input.read())
-    return file_path
+    for pkg_path, pkg_info in packages_dict.items():
+        # Ignora root vazio
+        if pkg_path == "":
+            continue
 
+        # Para caminhos 'node_modules/xxx'
+        name = pkg_info.get("name")
+        version = pkg_info.get("version")
+        if name and version:
+            all_packages.append((name, version))
 
-def parse_cve_file(file_path: str):
-    data = parse_file(file_path)
-    try:
-        return json.loads(data)["vulnerabilities"]
-    except KeyError as e:
-        raise ValueError(f"Chave faltando no arquivo: {e}")
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Erro ao decodificar JSON: {e}")
+        # Também checa sub-dependencies se existirem
+        sub_deps = pkg_info.get("dependencies", {})
+        for sub_name, sub_version in sub_deps.items():
+            all_packages.append((sub_name, sub_version))
 
-def calculate_statistics(cves):
-    from collections import Counter
-    years = Counter()
-    types = Counter()
-    severities = Counter()
+    return all_packages
 
-    for item in cves:
-        cve_data = item.get("cve", {})
-        years[cve_data.get("published", "0000")[:4]] += 1
+def extract_all_packages(packages_dict):
+    """
+    Retorna lista completa de pacotes (nome, versão) de qualquer nível no package-lock v3.
+    """
+    all_packages = []
 
-        weaknesses = cve_data.get("weaknesses", [])
-        if weaknesses and "description" in weaknesses[0]:
-            cwe_desc = weaknesses[0]["description"]
-            if cwe_desc:
-                types[cwe_desc[0].get("value", "Unknown")] += 1
+    def recurse(pkg_info, parent_name=None):
+        # Tenta pegar o nome do pacote
+        name = pkg_info.get("name", parent_name)
+        version = pkg_info.get("version")
+        if name and version:
+            all_packages.append((name, version))
+        
+        # Processa sub-dependencies
+        for sub_name, sub_version in pkg_info.get("dependencies", {}).items():
+            # O sub_name aqui é a chave do dicionário, mas precisamos passar a versão também
+            # Cria um "mock" de pacote com nome/sub_version, já que package-lock v3 não dá info completa
+            sub_pkg_info = {"name": sub_name, "version": sub_version}
+            recurse(sub_pkg_info, parent_name=sub_name)
 
-        metrics = cve_data.get("metrics", {})
-        if "cvssMetricV31" in metrics and metrics["cvssMetricV31"]:
-            score = metrics["cvssMetricV31"][0]["cvssData"].get("baseScore")
-            if score is not None:
-                severities[str(score)] += 1
-        elif "cvssMetricV2" in metrics and metrics["cvssMetricV2"]:
-            score = metrics["cvssMetricV2"][0]["cvssData"].get("baseScore")
-            if score is not None:
-                severities[str(score)] += 1
+    for pkg_path, pkg_info in packages_dict.items():
+        if pkg_path == "":
+            continue
+        recurse(pkg_info)
 
-    return dict(years), dict(types.most_common(10)), dict(severities)
-
-# def generate_watson_summary(cves, examples=EXAMPLES):
-#     prompt_input = f"{examples}\nEntrada: {json.dumps(cves[:5])}\nSaída:"
-#     response = model.generate_text(prompt=prompt_input, guardrails=False)
-#     return response.split("Entrada")[0].strip()
+    # Remove duplicados
+    return list(set(all_packages))
 
 
-def generate_watson_summary(cves, examples=EXAMPLES):
-    years, types, severities = calculate_statistics(cves) # extrai estatísticas
+import sqlite3
 
-    summary_input = (
-        f"Resumo dos dados carregados:\n"
-        f"- Total de CVEs: {len(cves)}\n"
-        f"- CVEs por ano: {years}\n"
-        f"- Principais tipos de vulnerabilidades: {types}\n"
-        f"- Distribuição de pontuação CVSS: {severities}\n"
-    )
+def extract_all_packages(packages_dict):
+    all_packages = []
 
-    prompt_input = (
-        f"{examples}\n"
-        f"{summary_input}\n"
-        f"Com base nos dados acima, gere um resumo analítico das vulnerabilidades.\n"
-        f"Output:"
-    )
+    def recurse(pkg_info, parent_name=None):
+        name = pkg_info.get("name", parent_name)
+        version = pkg_info.get("version")
+        if name and version:
+            all_packages.append((name, version))
 
-    response = model.generate_text(prompt=prompt_input, guardrails=False)
-    return response.strip()
+        for sub_name, sub_version in pkg_info.get("dependencies", {}).items():
+            sub_pkg_info = {"name": sub_name, "version": sub_version}
+            recurse(sub_pkg_info, parent_name=sub_name)
+
+    for pkg_path, pkg_info in packages_dict.items():
+        if pkg_path == "":
+            continue
+        recurse(pkg_info)
+
+    return list(set(all_packages))
+
+
+def intersect_dependencies(lock_data, db_path):
+    """
+    Verifica dependências do package-lock.json contra CVEs armazenados no SQLite.
+    """
+    packages_dict = lock_data.get("packages", {})
+    all_packages = extract_all_packages(packages_dict)
+
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    vulnerable_packages = []
+
+    for name, version in all_packages:
+        # Busca por nome do pacote nas descrições
+        cur.execute("SELECT id, description FROM cves WHERE description LIKE ?", (f"%{name}%",))
+        for row in cur.fetchall():
+            cve_id, description = row
+            vulnerable_packages.append({
+                "package": name,
+                "version": version,
+                "cve_id": cve_id,
+                "description": description
+            })
+
+    conn.close()
+    return vulnerable_packages
+
