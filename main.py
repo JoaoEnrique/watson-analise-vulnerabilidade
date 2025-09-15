@@ -42,14 +42,32 @@ async def process_file(file_input: UploadFile = File(...)):
 
         prompt = f"{EXAMPLES}\n{prompt_input}\nOutput:"
 
-        # watson_result = model.generate_text(prompt=prompt, guardrails=False)
-        # summary = watson_result.strip()
-        summary = "ioavsasas"
+        watson_result = model.generate_text(prompt=prompt, guardrails=False)
+        summary = watson_result.strip()
 
+
+        # Filtra vulnerabilidades confirmadas pelo Watson
+        vulnerable_deps_confirmed = [
+            dep for dep in vulnerable_deps
+            if dep["package"] in summary
+        ]
+
+        if not vulnerable_deps_confirmed:
+            return JSONResponse({
+                "message": "Nenhuma vulnerabilidade confirmada pelo Watson",
+                "vulnerable_dependencies": []
+            })
+
+        # Retorna apenas os confirmados
         return JSONResponse({
-            "vulnerable_dependencies": vulnerable_deps,
+            "vulnerable_dependencies": vulnerable_deps_confirmed,
             "watson_summary": summary
         })
+
+        # return JSONResponse({
+        #     "vulnerable_dependencies": vulnerable_deps,
+        #     "watson_summary": summary
+        # })
 
     except json.JSONDecodeError:
         return JSONResponse({"error": "Arquivo inválido"}, status_code=400)
