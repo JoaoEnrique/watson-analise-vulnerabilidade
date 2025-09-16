@@ -21,5 +21,3 @@ jobs:
 
       - name: Run Vulnerability Check
         run: npx watson-watchdog
-        env:
-          API_URL: "http://seu-servidor-fastapi:8000/api"
