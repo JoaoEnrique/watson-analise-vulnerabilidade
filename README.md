@@ -45,6 +45,9 @@ watson-watchdog
 │ 0       │ express   │ 4.17.1 │ CVE-XXXX  │ Description of vulnerability│
 └─────────┴───────────┴────────┴───────────┴─────────────────────────────┘
 ```
+<img width="1531" height="807" alt="image" src="https://github.com/user-attachments/assets/31f87c08-2092-4e4e-bdd9-cc6747a0e60e" />
+
+
 
 O comando retorna exit code 1 se houver vulnerabilidades.
 
