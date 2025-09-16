@@ -3,3 +3,4 @@ venv
 uploads
 __pycache__
 cve_dataset.json
+cve_dataset.db
