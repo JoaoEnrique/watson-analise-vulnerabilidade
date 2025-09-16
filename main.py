@@ -42,9 +42,9 @@ async def process_file(file_input: UploadFile = File(...)):
 
         prompt = f"{EXAMPLES}\n{prompt_input}\nOutput:"
 
-        # watson_result = model.generate_text(prompt=prompt, guardrails=False)
-        # summary = watson_result.strip()
-        summary = "oii"
+        watson_result = model.generate_text(prompt=prompt, guardrails=False, timeout=120)
+        summary = watson_result.strip()
+        # summary = "oii"
 
 
         # Filtra vulnerabilidades confirmadas pelo Watson
