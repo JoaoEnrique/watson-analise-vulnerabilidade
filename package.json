@@ -10,7 +10,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.17.1",
-    "watson-watchdog": "^1.0.5"
+    "axios": "^1.6.0",
+    "dotenv": "^16.6.1",
+    "form-data": "^4.0.4",
+    "lodash": "^4.17.5",
+    "minimist": "^1.2.2"
   }
 }
