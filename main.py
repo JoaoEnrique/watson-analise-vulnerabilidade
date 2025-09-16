@@ -40,12 +40,12 @@ async def process_file(file_input: UploadFile = File(...)):
         for dep in vulnerable_deps:
             prompt_input += f"- {dep['package']}@{dep['version']}: {dep['cve_id']} - {dep['description']}\n"
 
-        prompt = f"{EXAMPLES}\n{prompt_input}\nOutput:"
+        prompt = f"{EXAMPLES}\nInput: {prompt_input}\nOutput:"
 
+        print("prompt")
+        print(prompt)
         watson_result = model.generate_text(prompt=prompt, guardrails=False)
         summary = watson_result.strip()
-        # summary = "oii"
-
 
         # Filtra vulnerabilidades confirmadas pelo Watson
         vulnerable_deps_confirmed = [

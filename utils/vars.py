@@ -1,14 +1,16 @@
-EXAMPLES = """Você é um assistente especializado em segurança da informação. Sua tarefa é analisar vulnerabilidades encontradas em dependências de projetos Node.js, fornecidas em formato de CVE (Common Vulnerabilities and Exposures).
+EXAMPLES = """Você é um assistente especializado em segurança da informação.
+Sua tarefa é analisar vulnerabilidades encontradas em dependências de projetos Node.js (em formato CVE).
 
 Instrução IMPORTANTE: considere **apenas CVEs que afetam diretamente a versão exata do pacote Node.js** listado.  
 Ignorar CVEs que mencionem nomes parecidos ou conceitos relacionados, mas que não afetem diretamente o pacote e a versão informados (falsos positivos).  
 A descrição das vulnerabilidades deve mencionar explicitamente o **pacote e a versão afetada**.
 
-Formato esperado da saída:
-- Breve introdução do cenário
-- Destaque das dependências realmente afetadas
-- Análise da severidade das vulnerabilidades
-- Recomendações de segurança
+Regras:
+- Analise apenas a lista fornecida no Input.
+- No Output, explique de forma objetiva se a vulnerabilidade se aplica ou não.
+- Forneça recomendações de atualização ou mitigação quando aplicável.
+- NÃO repita nem copie o conteúdo do Input: no Output.
+- O Output deve conter apenas a análise e a recomendação.
 
 
 Input: Dependências vulneráveis encontradas:
@@ -21,20 +23,16 @@ Input: Dependências vulneráveis encontradas:
 - package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions <=4.17.21
 - package: form-data@^4.0.4, CVE-2002-0081: Buffer overflows in php_mime_split in PHP 4.x
 
-Output: `lodash@^4.17.21` apresenta vulnerabilidade de prototype pollution, podendo comprometer a integridade de objetos internos da aplicação.  
-`form-data@^4.0.4` não possui vulnerabilidades aplicáveis à versão usada; CVEs listadas são irrelevantes para Node.js e devem ser ignoradas.
-
+Output: `lodash@^4.17.21` apresenta vulnerabilidade de prototype pollution (CVE-2022-23307), podendo comprometer a integridade de objetos internos da aplicação.  
 Recomenda-se atualizar `lodash` para >4.17.21 e revisar entradas externas.
 
 
 Input: Dependências vulneráveis encontradas:
-- package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions < 4.18.21
+- package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions <= 4.18.21
 - package: form-data@^4.0.4, CVE-2002-0081: Buffer overflows in php_mime_split in PHP 4.x
 
-Output: `lodash@^4.17.21` apresenta vulnerabilidade de prototype pollution, podendo comprometer a integridade de objetos internos da aplicação.  
-`form-data@^4.0.4` não possui vulnerabilidades aplicáveis à versão usada; CVEs listadas são irrelevantes para Node.js e devem ser ignoradas.
-
-Recomenda-se atualizar `lodash` para >=4.18.21 e revisar entradas externas.
+Output: `lodash@^4.17.21` apresenta vulnerabilidade de prototype pollution (CVE-2022-23307), podendo comprometer a integridade de objetos internos da aplicação.  
+Recomenda-se atualizar `lodash` para >4.18.21 e revisar entradas externas.
 
 
 Input: Dependências vulneráveis encontradas:
@@ -45,61 +43,11 @@ Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
 
 
 Input: Dependências vulneráveis encontradas:
-- package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions <4.17.21
-- package: form-data@^4.0.4, Buffer overflows in (1) php_mime_split in PHP 4.1.0, 4.1.1, and 4.0.6 and earlier, and (2) php3_mime_split in PHP 3.0.x allows remote attackers to execute arbitrary code via a multipart/form-data HTTP POST request when file_uploads is enabled.
+- package: express@^4.18.2, CVE-2023-22563: Improper input sanitization in express <4.18.3
+- package: minimist@^1.2.8, CVE-2020-7598: Prototype pollution in minimist <=1.2.5
 
-Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
-
-
-Input: Dependências vulneráveis encontradas:
-- package: minimist@^1.2.2, minimist before 1.2.3 could be tricked into adding or modifying properties of Object.prototype using a \"constructor\" or \"__proto__\" payload.
-
-Output: `minimist@^1.2.2` apresenta vulnerabilidade que poderia ser enganado para adicionar ou modificar propriedades de Object.prototype usando um payload \"constructor\" ou \"__proto__\".
-
-Recomenda-se atualizar `minimist` para >1.2.2 e revisar entradas externas.
-
-
-Input: Dependências vulneráveis encontradas:
-- package: minimist@^1.2.2, minimist before 1.2.2 could be tricked into adding or modifying properties of Object.prototype using a \"constructor\" or \"__proto__\" payload.
-
-Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
-
-
-Input: Dependências vulneráveis encontradas:
-- package: hasown@^2.0.2, Unspecified vulnerability in Mozilla Firefox before 1.5.0.8, Thunderbird before 1.5.0.8, and SeaMonkey before 1.0.6 allows remote attackers to execute arbitrary code via the XML.prototype.hasOwnProperty JavaScript function
-- package: form-data@^4.0.4, Directory traversal vulnerability in error.php in GuppY 4.6.3, 4.5.16, and earlier allows remote attackers to include and execute arbitrary local files via a .. (dot dot) in the id parameter.  NOTE: this can be leveraged to bypass authentication and upload arbitrary files by including admin/inc/upload.inc and specifying certain multipart/form-data input for admin/inc/upload.inc.
-
-Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
-
-
-Input: Dependências vulneráveis encontradas:
-- package: hasown@^2.0.2, Unspecified vulnerability in Mozilla Firefox before 1.5.0.8, Thunderbird before 1.5.0.8, and SeaMonkey before 1.0.6 allows remote attackers to execute arbitrary code via the XML.prototype.hasOwnProperty JavaScript function.
-- package: form-data@^4.0.4, ActionForm in Apache Software Foundation (ASF) Struts before 1.2.9 with BeanUtils 1.7 allows remote attackers to cause a denial of service via a multipart/form-data encoded form with a parameter name that references the public getMultipartRequestHandler method, which provides further access to elements in the CommonsMultipartRequestHandler implementation and BeanUtils.
-
-Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
-
-
-Input: Dependências vulneráveis encontradas:
-- package: hasown@^2.0.2, Unspecified vulnerability in Mozilla Firefox before 1.5.0.8, Thunderbird before 1.5.0.8, and SeaMonkey before 1.0.6 allows remote attackers to execute arbitrary code via the XML.prototype.hasOwnProperty JavaScript function.
-- package: form-data@^4.0.4, The management service in IBM Tivoli Provisioning Manager for OS Deployment before 5.1 Fix Pack 2 does not properly handle multipart/form-data in HTTP POST requests, which allows remote attackers to execute arbitrary code or cause a denial of service (daemon crash) via crafted POST requests to port 8080/tcp or 443/tcp.
-
-Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
-
-
-Input: Dependências vulneráveis encontradas:
-- package: hasown@^2.0.2, Unspecified vulnerability in Mozilla Firefox before 1.5.0.8, Thunderbird before 1.5.0.8, and SeaMonkey before 1.0.6 allows remote attackers to execute arbitrary code via the XML.prototype.hasOwnProperty JavaScript function.
-- package: form-data@^4.0.4, The management service in IBM Tivoli Provisioning Manager for OS Deployment before 5.1 Fix Pack 2 does not properly handle multipart/form-data in HTTP POST requests, which allows remote attackers to execute arbitrary code or cause a denial of service (daemon crash) via crafted POST requests to port 8080/tcp or 443/tcp.
-
-Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
-
-
-Input: Dependências vulneráveis encontradas:
-- package: js-yaml@^4.1.0, CVE-2023-23302: Arbitrary code execution in js-yaml versions <=4.1.0
-- package: debug@^4.3.4, CVE-2021-4104: Prototype pollution in debug versions <4.3.4
-
-Output: `js-yaml@^4.1.0` possui vulnerabilidade aplicável, permitindo execução de código arbitrário em versões anteriores ou igual a 4.1.0.  
-
-Recomenda-se atualizar `js-yaml` para >4.1.0 e revisar entradas externas.
+Output: `express@^4.18.2` apresenta vulnerabilidade de injeção de cabeçalhos HTTP (CVE-2023-22563) e precisa ser atualizado para >=4.18.3.  
+Recomenda-se atualizar `express` e implementar validação de entradas
 
 
 Input: Dependências vulneráveis encontradas:
@@ -110,13 +58,107 @@ Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
 
 
 Input: Dependências vulneráveis encontradas:
+- package: js-yaml@^4.1.0, CVE-2023-23302: Arbitrary code execution in js-yaml versions <=4.1.0
+- package: debug@^4.3.4, CVE-2021-4104: Prototype pollution in debug versions <4.3.4
+
+Output: `js-yaml@^4.1.0` apresenta vulnerabilidade de execução arbitrária de código (CVE-2023-23302) e precisa ser atualizado para uma versão corrigida (>4.1.0).
+Recomenda-se atualizar js-yaml e revisar pontos de desserialização de YAML.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: js-yaml@^4.1.0, CVE-2023-23302: Arbitrary code execution in js-yaml versions <4.1.0
+- package: debug@^4.3.4, CVE-2021-4104: Prototype pollution in debug versions <=4.3.4
+
+Output: `debug@^4.3.4` apresenta vulnerabilidade de prototype pollution (CVE-2021-4104) e precisa ser atualizado para >=4.3.5.
+Recomenda-se atualizar debug e implementar validação de objetos recebidos.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: lodash@^4.18.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions < 4.18.21
+- package: form-data@^4.0.4, CVE-2002-0081: Buffer overflows in php_mime_split in PHP 4.x
+
+Output:  `lodash@^4.18.21` apresenta vulnerabilidade de prototype pollution (CVE-2022-23307), podendo comprometer a integridade de objetos internos da aplicação.  
+Recomenda-se atualizar `lodash` para >=4.18.21 e revisar entradas externas
+
+
+Input: Dependências vulneráveis encontradas:
 - package: express@^4.18.2, CVE-2023-22563: Improper input sanitization in express <4.18.3
 - package: minimist@^1.2.8, CVE-2020-7598: Prototype pollution in minimist <=1.2.5
 
-Output: `express@^4.18.2` apresenta vulnerabilidade de injeção de cabeçalhos HTTP e precisa ser atualizado para >=4.18.3.  
+Output: `express@^4.18.2` apresenta vulnerabilidade de injeção de cabeçalhos HTTP (CVE-2023-22563) e precisa ser atualizado para >4.18.2.  
+Recomenda-se atualizar `express` e implementar validação de entradas
 
-Recomenda-se atualizar `express` e implementar validação de entradas;
+
+Input: Dependências vulneráveis encontradas:
+- package: js-yaml@^4.1.0, CVE-2023-23302: Arbitrary code execution in js-yaml versions <=4.1.0
+- package: debug@^4.3.4, CVE-2021-4104: Prototype pollution in debug versions < 4.3.4
+
+Output: `js-yaml@^4.1.0` apresenta vulnerabilidade de execução arbitrária de código (CVE-2023-23302) e precisa ser atualizado para uma versão corrigida (>4.1.0).
+`debug@^4.3.4` apresenta vulnerabilidade de prototype pollution (CVE-2021-4104) e precisa ser atualizado para uma versão corrigida (>=4.3.4)
+Recomenda-se atualizar js-yaml e revisar pontos de desserialização de YAML.
 
 
+Input: Dependências vulneráveis encontradas:
+- package: minimist@^0.2.1, CVE-2020-7598: Prototype pollution in minimist <0.2.1
+
+Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
+
+
+Input: Dependências vulneráveis encontradas:
+- package: minimist@^0.2.1, CVE-2020-7598: Prototype pollution in minimist <=0.2.1
+
+Output: `minimist@^0.2.1` apresenta vulnerabilidade de prototype pollution (CVE-2020-7598) e precisa ser atualizado para >0.2.1.
+Recomenda-se atualizar minimist e implementar validação de objetos recebidos.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: minimist@^0.2.1, CVE-2020-7598: Prototype pollution in minimist < 0.2.2
+
+Output: `minimist@^0.2.1` apresenta vulnerabilidade de prototype pollution (CVE-2020-7598) e precisa ser atualizado para >=0.2.2.
+Recomenda-se atualizar minimist e implementar validação de objetos recebidos.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: axios@^0.21.0, CVE-2021-3749: SSRF vulnerability in axios <0.21.1
+- package: tar@^6.1.5, CVE-2021-32804: Arbitrary file creation when extracting tarballs
+
+Output:  `axios@^0.21.0` apresenta vulnerabilidade de SSRF (CVE-2021-3749) e precisa ser atualizado para >=0.21.1.
+Recomenda-se atualizar axios e implementar validação de entradas.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: axios@^0.21.0, CVE-2021-3749: SSRF vulnerability in axios <0.21.1
+- package: tar@^6.1.5, CVE-2021-32804: Arbitrary file creation when extracting tarballs
+
+Output:  `tar@^6.1.5` apresenta vulnerabilidade de criação de arquivos arbitrários (CVE-2021-32804) e precisa ser atualizado para >=6.1.6.
+Recomenda-se atualizar tar e implementar validação de entradas.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: ansi-regex@^5.0.0, CVE-2021-3807: Inefficient Regular Expression Complexity in ansi-regex <=5.0.0
+
+Output: `ansi-regex@^5.0.0` apresenta vulnerabilidade Complexidade de Expressão Regular Ineficiente em ansi-regex (CVE-2021-3807) e precisa ser atualizado para > 5.0.0
+Recomenda-se atualizar ansi-regex.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: glob-parent@^5.1.1, CVE-2020-28469: Regular expression denial of service in glob-parent <5.1.2
+- package: postcss@^7.0.35, CVE-2021-23368: Regular expression denial of service in postcss <7.0.36
+
+Output: `glob-parent@^5.1.1` apresenta vulnerabilidade de negação de serviço (CVE-2020-28469) e precisa ser atualizado para >=5.1.2.
+Recomenda-se atualizar glob-parent e implementar validação de entradas.
+`postcss@^7.0.35` apresenta vulnerabilidade de negação de serviço (CVE-2021-23368) e precisa ser atualizado para >=7.0.36.
+Recomenda-se atualizar postcss e implementar validação de entradas.
+
+
+Input: Dependências vulneráveis encontradas:
+- package: `form-data@^4.0.4`, kin-openapi is a Go project for handling OpenAPI files. Prior to 0.131.0, when validating a request with a multipart/form-data schema, if the OpenAPI schema allows it, an attacker can upload a crafted ZIP file (e.g., a ZIP bomb), causing the server to consume all available system memory. The root cause comes from the ZipFileBodyDecoder, which is registered automatically by the module (contrary to what the documentation says). This vulnerability is fixed in 0.131.0.
+
+Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
+
+
+Input: - package: `mime-types@^2.1.12`TYPO3 is an open source PHP based web content management system. In TYPO3 before versions 8.7.40, 9.5.25, 10.4.14, 11.1.1 due to improper input validation, attackers can by-pass restrictions of predefined options and submit arbitrary data in the Form Designer backend module of the Form Framework. In the default configuration of the Form Framework this allows attackers to explicitly allow arbitrary mime-types for file uploads - however, default _fileDenyPattern_ successfully blocked files like _.htaccess_ or _malicious.php_. Besides that, attackers can persist those files in any writable directory of the corresponding TYPO3 installation. A valid backend user account with access to the form module is needed to exploit this vulnerability. This is fixed in versions 8.7.40, 9.5.25, 10.4.14, 11.1.1.
+
+Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
 
 """

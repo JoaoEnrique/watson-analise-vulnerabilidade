@@ -91,12 +91,14 @@ def intersect_dependencies(lock_data, db_path):
         cur.execute("SELECT id, description FROM cves WHERE description LIKE ?", (f"%{name}%",))
         for row in cur.fetchall():
             cve_id, description = row
-            vulnerable_packages.append({
-                "package": name,
-                "version": version,
-                "cve_id": cve_id,
-                "description": description
-            })
+            if "node" in description.lower() or "module" in description.lower():
+                vulnerable_packages.append({
+                    "package": name,
+                    "version": version,
+                    "cve_id": cve_id,
+                    "description": description
+                })
+
 
     conn.close()
     return vulnerable_packages
