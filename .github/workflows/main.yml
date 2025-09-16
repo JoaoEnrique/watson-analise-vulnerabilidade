@@ -1,0 +1,25 @@
+name: Security Check
+
+on:
+  push:
+    branches: [example]
+
+  pull_request:
+    branches: [example]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+
+      - name: Run Vulnerability Check
+        run: npx watson-watchdog
+        env:
+          API_URL: "http://seu-servidor-fastapi:8000/api"
