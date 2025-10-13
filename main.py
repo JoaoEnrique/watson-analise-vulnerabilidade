@@ -1,8 +1,8 @@
 from utils.process import intersect_dependencies
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from utils.watson import model
+from utils.watson import getModel
 from utils.vars import EXAMPLES
 import json
 
@@ -21,8 +21,13 @@ def home():
     return JSONResponse("Ola Mundo")
 
 @app.post("/api/process")
-async def process_file(file_input: UploadFile = File(...)):
+async def process_file(
+    file_input: UploadFile = File(...),
+    api_key: str = Form(...),
+    project_id: str = Form(...)
+):
     try:
+        model = getModel(api_key, project_id)
         content = await file_input.read()
         lock_data = json.loads(content)
 
