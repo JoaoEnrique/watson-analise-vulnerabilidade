@@ -5,6 +5,7 @@
 
 ## 🚀 Funcionalidades
 
+- Backend: https://github.com/JoaoEnrique/watson-watchdog/tree/backend
 - Analisa dependências do `package-lock.json` em busca de CVEs.  
 - Integra com um **servidor FastAPI** que consulta um banco SQLite com CVEs.  
 - Gera um resumo usando **IA** para explicar as vulnerabilidades.  
@@ -20,13 +21,22 @@
 npm install --save-dev watson-watchdog
 ```
 
+## 🌐 Requisitos
+É necessário obter uma conta no Watsson Studio com créditos para utilizar o Watson e adicionar a chave de API e id do projeto no .env
+
+```bash
+API_URL=http://127.0.0.1:8000/api #para rodar back local (opcional)
+API_KEY=
+PROJECT_ID=
+```
+
+
 ## Usando npx
+Execute o comando para fazer a analise local das vulnerabilidades do seu projeto.
+```bash
 npx watson-watchdog
+```
 
-
-Certifique-se de configurar a variável de ambiente API_URL apontando para o servidor:
-
-API_URL=http://localhost:8000/api
 
 ## ⚡ CLI
 
@@ -101,19 +111,15 @@ jobs:
       - name: Run Vulnerability Check
         run: npx watson-watchdog
         env:
-          API_URL: "http://seu-servidor-fastapi:8000/api"
+          # vars em secrets no git
+          API_URL: ${{ secrets.API_URL }} #para rodar back local (opcional)
+          API_KEY: ${{ secrets.API_KEY }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
 ```
 
 Se houver vulnerabilidades, o job falha automaticamente.
 
-## 🌐 Configuração
 
-Variáveis de ambiente:
-
-Nome	Descrição
-API_URL	URL do servidor FastAPI que processa CVEs
-
-
-📜 Licença
+## 📜 Licença
 
 MIT License – sinta-se livre para usar e modificar.

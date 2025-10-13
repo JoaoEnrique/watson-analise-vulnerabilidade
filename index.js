@@ -16,6 +16,8 @@ export async function checkVulnerabilities() {
     const formData = new FormData();
     const fileStream = fs.createReadStream(lockPath);
     formData.append("file_input", fileStream, "package-lock.json");
+    formData.append("api_key", process.env.API_KEY);
+    formData.append("project_id", process.env.PROJECT_ID);
 
     const headers = formData.getHeaders();
 
@@ -26,7 +28,7 @@ export async function checkVulnerabilities() {
 
     return response.data;
   } catch (err) {
-    console.error("Erro ao verificar vulnerabilidades:", err.message);
+    console.error("Erro ao verificar vulnerabilidades:", err);
     throw err;
   }
 }
