@@ -10,7 +10,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "node-ipc": "^12.0.0",
-    "watson-watchdog": "^1.0.6" 
+    "watson-watchdog": "^1.0.6"
   }
 }
