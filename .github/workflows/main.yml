@@ -1,0 +1,27 @@
+name: workflow
+
+on:
+  push:
+    branches: [workflow]
+
+  pull_request:
+    branches: [workflow]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+
+      - name: Run Vulnerability Check
+        run: npx watson-watchdog
+        env:
+        #   API_URL: ${{ secrets.API_URL }} #para rodar back local (opcional)
+          API_KEY: ${{ secrets.API_KEY }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}

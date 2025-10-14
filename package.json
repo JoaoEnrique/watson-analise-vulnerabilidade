@@ -1,0 +1,16 @@
+{
+  "name": "test-vul",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "node-ipc": "10.1.1",
+    "watson-watchdog": "^1.0.6"
+  }
+}
