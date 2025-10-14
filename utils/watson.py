@@ -9,8 +9,6 @@ def getModel(api_key, project_id):
     # api_key = os.getenv("API_KEY")
     # project_id = os.getenv("PROJ_ID")
     space_id = os.getenv("SPACE_ID")
-    print(api_key)
-    print(project_id)
     credentials = Credentials(
         url="https://us-south.ml.cloud.ibm.com",
         api_key=api_key

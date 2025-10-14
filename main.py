@@ -24,7 +24,8 @@ def home():
 async def process_file(
     file_input: UploadFile = File(...),
     api_key: str = Form(...),
-    project_id: str = Form(...)
+    project_id: str = Form(...),
+    include_subdependencies: bool = Form(False)
 ):
     try:
         model = getModel(api_key, project_id)
@@ -32,7 +33,9 @@ async def process_file(
         lock_data = json.loads(content)
 
         # Busca direto no banco SQLite
-        vulnerable_deps = intersect_dependencies(lock_data, "cve_dataset.db")
+        vulnerable_deps = intersect_dependencies(lock_data, "cve_dataset.db", include_subdependencies)
+        print("vulnerable_deps")
+        print(vulnerable_deps)
 
         if not vulnerable_deps:
             return JSONResponse({

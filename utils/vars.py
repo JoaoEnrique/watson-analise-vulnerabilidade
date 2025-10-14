@@ -20,22 +20,6 @@ Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
 
 
 Input: Dependências vulneráveis encontradas:
-- package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions <=4.17.21
-- package: form-data@^4.0.4, CVE-2002-0081: Buffer overflows in php_mime_split in PHP 4.x
-
-Output: `lodash@^4.17.21` apresenta vulnerabilidade de prototype pollution (CVE-2022-23307), podendo comprometer a integridade de objetos internos da aplicação.  
-Recomenda-se atualizar `lodash` para >4.17.21 e revisar entradas externas.
-
-
-Input: Dependências vulneráveis encontradas:
-- package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions <= 4.18.21
-- package: form-data@^4.0.4, CVE-2002-0081: Buffer overflows in php_mime_split in PHP 4.x
-
-Output: `lodash@^4.17.21` apresenta vulnerabilidade de prototype pollution (CVE-2022-23307), podendo comprometer a integridade de objetos internos da aplicação.  
-Recomenda-se atualizar `lodash` para >4.18.21 e revisar entradas externas.
-
-
-Input: Dependências vulneráveis encontradas:
 - package: lodash@^4.17.21, CVE-2022-23307: Prototype pollution vulnerability in lodash affecting versions <4.17.21
 - package: form-data@^4.0.4, CVE-2002-0081: Buffer overflows in php_mime_split in PHP 4.x
 
@@ -82,14 +66,6 @@ Recomenda-se atualizar `lodash` para >=4.18.21 e revisar entradas externas
 
 
 Input: Dependências vulneráveis encontradas:
-- package: express@^4.18.2, CVE-2023-22563: Improper input sanitization in express <4.18.3
-- package: minimist@^1.2.8, CVE-2020-7598: Prototype pollution in minimist <=1.2.5
-
-Output: `express@^4.18.2` apresenta vulnerabilidade de injeção de cabeçalhos HTTP (CVE-2023-22563) e precisa ser atualizado para >4.18.2.  
-Recomenda-se atualizar `express` e implementar validação de entradas
-
-
-Input: Dependências vulneráveis encontradas:
 - package: js-yaml@^4.1.0, CVE-2023-23302: Arbitrary code execution in js-yaml versions <=4.1.0
 - package: debug@^4.3.4, CVE-2021-4104: Prototype pollution in debug versions < 4.3.4
 
@@ -105,20 +81,6 @@ Output: Nenhum pacote apresenta vulnerabilidade, nenhuma ação necessária
 
 
 Input: Dependências vulneráveis encontradas:
-- package: minimist@^0.2.1, CVE-2020-7598: Prototype pollution in minimist <=0.2.1
-
-Output: `minimist@^0.2.1` apresenta vulnerabilidade de prototype pollution (CVE-2020-7598) e precisa ser atualizado para >0.2.1.
-Recomenda-se atualizar minimist e implementar validação de objetos recebidos.
-
-
-Input: Dependências vulneráveis encontradas:
-- package: minimist@^0.2.1, CVE-2020-7598: Prototype pollution in minimist < 0.2.2
-
-Output: `minimist@^0.2.1` apresenta vulnerabilidade de prototype pollution (CVE-2020-7598) e precisa ser atualizado para >=0.2.2.
-Recomenda-se atualizar minimist e implementar validação de objetos recebidos.
-
-
-Input: Dependências vulneráveis encontradas:
 - package: axios@^0.21.0, CVE-2021-3749: SSRF vulnerability in axios <0.21.1
 - package: tar@^6.1.5, CVE-2021-32804: Arbitrary file creation when extracting tarballs
 
@@ -127,28 +89,10 @@ Recomenda-se atualizar axios e implementar validação de entradas.
 
 
 Input: Dependências vulneráveis encontradas:
-- package: axios@^0.21.0, CVE-2021-3749: SSRF vulnerability in axios <0.21.1
-- package: tar@^6.1.5, CVE-2021-32804: Arbitrary file creation when extracting tarballs
-
-Output:  `tar@^6.1.5` apresenta vulnerabilidade de criação de arquivos arbitrários (CVE-2021-32804) e precisa ser atualizado para >=6.1.6.
-Recomenda-se atualizar tar e implementar validação de entradas.
-
-
-Input: Dependências vulneráveis encontradas:
 - package: ansi-regex@^5.0.0, CVE-2021-3807: Inefficient Regular Expression Complexity in ansi-regex <=5.0.0
 
 Output: `ansi-regex@^5.0.0` apresenta vulnerabilidade Complexidade de Expressão Regular Ineficiente em ansi-regex (CVE-2021-3807) e precisa ser atualizado para > 5.0.0
 Recomenda-se atualizar ansi-regex.
-
-
-Input: Dependências vulneráveis encontradas:
-- package: glob-parent@^5.1.1, CVE-2020-28469: Regular expression denial of service in glob-parent <5.1.2
-- package: postcss@^7.0.35, CVE-2021-23368: Regular expression denial of service in postcss <7.0.36
-
-Output: `glob-parent@^5.1.1` apresenta vulnerabilidade de negação de serviço (CVE-2020-28469) e precisa ser atualizado para >=5.1.2.
-Recomenda-se atualizar glob-parent e implementar validação de entradas.
-`postcss@^7.0.35` apresenta vulnerabilidade de negação de serviço (CVE-2021-23368) e precisa ser atualizado para >=7.0.36.
-Recomenda-se atualizar postcss e implementar validação de entradas.
 
 
 Input: Dependências vulneráveis encontradas:
